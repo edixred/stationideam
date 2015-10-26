@@ -30,6 +30,7 @@ public class controladorEstaciones {
     private List<anioestacion> listamesesVariableEstacion;
     private variableEstacion estacion;
     private anioestacion aniosestacion,mesesanioestacion;
+    
     @EJB
     private StationsFacade estacionEjb;
     
@@ -44,17 +45,18 @@ public class controladorEstaciones {
     
     public void ListarAniosVariableEstacion()
     {
-        listaaniosVariableEstacion = estacionEjb.getByYearVariableStations(-8572050, 155700,1);
+        listaaniosVariableEstacion = estacionEjb.getByYearVariableStations(-8572050, 155700,Integer.parseInt(estacion.getVariable_id()));
         aniosestacion=new anioestacion();
-        System.out.println("anios "+listaaniosVariableEstacion.size());
+       
     }
     
-    public void ListarMesesAniosVariableEstacion()
-    {
-        listamesesVariableEstacion = estacionEjb.getByMonthfromYearVariableStations(-8572050, 155700,1,1965);
+    public void listarMesesAnio(){
+        listamesesVariableEstacion = estacionEjb
+                .getByMonthfromYearVariableStations(-8572050, 155700,Integer.parseInt(estacion.getVariable_id()),Integer.parseInt(aniosestacion.getAnio()));
         mesesanioestacion=new anioestacion();
-        System.out.println("meses "+listamesesVariableEstacion.size());
     }
+    
+    
 
     public List<variableEstacion> getListaEstaciones() {
         return listaEstaciones;

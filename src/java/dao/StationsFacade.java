@@ -65,7 +65,7 @@ public class StationsFacade extends AbstractFacade<Stations> {
     public List<anioestacion> getByYearVariableStations(int latitude, int longitude, int variable) {
         try {
             List<anioestacion> listaAnioEstaciones=new ArrayList<anioestacion>();
-            Query q = getEntityManager().createNativeQuery("SELECT \n"
+            Query qy = getEntityManager().createNativeQuery("SELECT \n"
                     + "	distinct year \n"
                     + "FROM\n"
                     + "	stations\n"
@@ -79,10 +79,10 @@ public class StationsFacade extends AbstractFacade<Stations> {
                     + "	latitude_3857=? and longitude_3857=?\n"
                     + "	AND\n"
                     + "	variable_id=? order by year");
-            q.setParameter(1, latitude);
-            q.setParameter(2, longitude);
-            q.setParameter(3, variable);
-            List<Object>lista=q.getResultList();
+            qy.setParameter(1, latitude);
+            qy.setParameter(2, longitude);
+            qy.setParameter(3, variable);
+            List<Object>lista=qy.getResultList();
            
             for ( Object obj :lista) {
               
@@ -98,7 +98,7 @@ public class StationsFacade extends AbstractFacade<Stations> {
     public List<anioestacion> getByMonthfromYearVariableStations(int latitude, int longitude, int variable,int year) {
         try {
             List<anioestacion> listaMesesAnioEstaciones=new ArrayList<anioestacion>();
-            Query q = getEntityManager().createNativeQuery("SELECT \n"
+            Query qm = getEntityManager().createNativeQuery("SELECT \n"
                     + "	month\n"
                     + " FROM\n"
                     + "	stations\n"
@@ -112,12 +112,12 @@ public class StationsFacade extends AbstractFacade<Stations> {
                     + "	latitude_3857=?\n"
                     + "	AND longitude_3857=?\n"
                     + "	AND variable_id=? \n"
-                    + "	and year=? order by month");
-            q.setParameter(1, latitude);
-            q.setParameter(2, longitude);
-            q.setParameter(3, variable);
-            q.setParameter(4, year);
-            List<Object>lista=q.getResultList();
+                    + "	AND year=? order by month");
+            qm.setParameter(1, latitude);
+            qm.setParameter(2, longitude);
+            qm.setParameter(3, variable);
+            qm.setParameter(4, year);
+            List<Object>lista=qm.getResultList();
            
             for ( Object obj :lista) {
               
@@ -125,6 +125,7 @@ public class StationsFacade extends AbstractFacade<Stations> {
                 mesesest.setAnio(obj.toString());
                 listaMesesAnioEstaciones.add(mesesest);
             }
+            System.out.println("MESES- "+listaMesesAnioEstaciones.size());
             return listaMesesAnioEstaciones ;
         } catch (Exception e) {
             return null;
