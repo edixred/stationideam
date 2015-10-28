@@ -61,3 +61,21 @@ WHERE
     AND variable_id=1
     AND year=1965
     AND month=2
+
+
+--PROMEDIO ANUAL
+SELECT 
+	value_point, units
+FROM
+	stations
+NATURAL JOIN
+	samples
+NATURAL JOIN
+	variables
+NATURAL JOIN
+	years
+WHERE
+    latitude_3857=-8572050
+    AND longitude_3857=155700
+    AND variable_id=1
+    AND year=1965
