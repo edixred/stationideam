@@ -43,3 +43,21 @@ WHERE
     AND longitude_3857=155700
     AND variable_id=1
     and year=1965 order by month
+
+--valor de captura estacion unidades
+SELECT 
+	value_point, units
+FROM
+	stations
+NATURAL JOIN
+	samples
+NATURAL JOIN
+	variables
+NATURAL JOIN
+	months
+WHERE
+    latitude_3857=-8572050
+    AND longitude_3857=155700
+    AND variable_id=1
+    AND year=1965
+    AND month=2
