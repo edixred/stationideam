@@ -96,6 +96,44 @@ public class StationsFacade extends AbstractFacade<Stations> {
         }
     }
 
+    public List<variableEstacion> getByValueYearVariableStations(int latitude, int longitude, int variable, int year) {
+        try {
+            List<variableEstacion> listaVariableAnualEstaciones = new ArrayList<variableEstacion>();
+            Query q = getEntityManager().createNativeQuery("SELECT \n"
+                    + "	value_point, units\n"
+                    + "FROM\n"
+                    + "	stations\n"
+                    + "NATURAL JOIN\n"
+                    + "	samples\n"
+                    + "NATURAL JOIN\n"
+                    + "	variables\n"
+                    + "NATURAL JOIN\n"
+                    + "	years\n"
+                    + "WHERE\n"
+                    + "    latitude_3857=?\n"
+                    + "    AND longitude_3857=?\n"
+                    + "    AND variable_id=?\n"
+                    + "    AND year=?\n"
+                    + "    ");
+            q.setParameter(1, latitude);
+            q.setParameter(2, longitude);
+            q.setParameter(3, variable);
+            q.setParameter(4, year);
+            List<Object[]>lista=q.getResultList();
+           
+            for ( Object[] obj :lista) {
+              
+                variableEstacion valanualest=new variableEstacion();
+                valanualest.setName_variable(obj[1].toString());
+                valanualest.setVariable_id(obj[0].toString());
+                listaVariableAnualEstaciones.add(valanualest);
+            }
+            return listaVariableAnualEstaciones ;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public List<anioestacion> getByMonthfromYearVariableStations(int latitude, int longitude, int variable, int year) {
         try {
             List<anioestacion> listaMesesAnioEstaciones = new ArrayList<anioestacion>();
@@ -126,7 +164,7 @@ public class StationsFacade extends AbstractFacade<Stations> {
                 mesesest.setAnio(obj.toString());
                 listaMesesAnioEstaciones.add(mesesest);
             }
-            System.out.println("MESES- " + listaMesesAnioEstaciones.size());
+            //System.out.println("MESES- " + listaMesesAnioEstaciones.size());
             return listaMesesAnioEstaciones;
         } catch (Exception e) {
             return null;
@@ -171,4 +209,7 @@ public class StationsFacade extends AbstractFacade<Stations> {
             return null;
         }
     }
+    
+    ///////CONSULTAS PARA GRAFICAR VARIABLES
+    
 }
