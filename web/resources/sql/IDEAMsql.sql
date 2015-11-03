@@ -106,3 +106,13 @@ FROM
     stations NATURAL JOIN samples NATURAL JOIN variables NATURAL JOIN years
 WHERE
     latitude_3857=-8572050 AND longitude_3857=155700 AND variable_id=1 AND month=1
+
+---
+SELECT 
+    station_id,name_variable,month, avg(value_point),units
+FROM	
+    stations NATURAL JOIN samples NATURAL JOIN variables NATURAL JOIN months
+WHERE
+    latitude_3857=-8572050 AND longitude_3857=155700 
+GROUP BY station_id,month,name_variable,units
+ORDER BY month
