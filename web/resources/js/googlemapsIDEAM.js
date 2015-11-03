@@ -89,7 +89,6 @@ window.onload = function () {
         var secondProjection = 'EPSG:4326';
         var result=proj4(firstProjection,secondProjection,[feature.geometry.x,feature.geometry.y]);
         html += '<b>EPSG:4326:</b> lat:' +result[0].toFixed(5)+" lon:"  + result[1].toFixed(5);+'</br>';
-        html+='<br/>EPSG:3857:</b>'+feature.geometry.x+" | "+feature.geometry.y+'</br>';
         var txtlat = document.getElementById("frmlatlon:idtxtlat");
         var txtlon = document.getElementById("frmlatlon:idtxtlon");
         txtlat.value = feature.geometry.x;

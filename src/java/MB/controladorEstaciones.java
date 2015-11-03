@@ -43,7 +43,6 @@ public class controladorEstaciones {
         estacion=new variableEstacion();
         this.aniosestacion=new anioestacion();
         this.mesesanioestacion=new anioestacion();
-        //System.out.println("variable "+listaEstaciones.size());
     }
     public controladorEstaciones() {
     }
@@ -68,9 +67,8 @@ public class controladorEstaciones {
     }
     public void consultarDatosEstacion(){
         listamedidaUnidades=estacionEjb.getByUnitMeasureMonthfromYearVariableStations(Integer.parseInt(txtlatitude), Integer.parseInt(txtlongotude),Integer.parseInt(estacion.getVariable_id()),Integer.parseInt(aniosestacion.getAnio()),Integer.parseInt(mesesanioestacion.getAnio()));
-        valorUnidades=new variableEstacion();
-        System.out.println(listamedidaUnidades.size());
-        System.out.println(listamedidaUnidades.get(0));
+        //valorUnidades=new variableEstacion();
+        //System.out.println(listamedidaUnidades.get(0).getName_variable());
     }
 
     public List<variableEstacion> getListamedidaUnidades() {

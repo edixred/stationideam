@@ -22,14 +22,7 @@
                 <p:layoutUnit header="Registro histórico de Estación(EPSG:4326)" position="east" size="45%" collapsed="false" collapsible="true" id="rigth" style="text-align: center;font-size: 10px;">
                     <center>
                         <div style="font-size: 11px;">
-                            <div style="visibility: hidden;">
-                                <p:inputText id="idtxtlat" value="#{controladorEstaciones.txtlatitude}" immediate="true"/>
-                                <p:inputText id="idtxtlon" value="#{controladorEstaciones.txtlongotude}" immediate="true"/>
-                                <p:commandButton id="btnClicK" actionListener="#{controladorEstaciones.consultarVariablesEstacion()}"
-                                                 ajax="true" update="idvariablesestacion"
-                                                 value="click">
-                                </p:commandButton>
-                            </div>
+                            
                             <h2>Para obtener información marcar una Estación en el Mapa  </h2>
                             <h4>Variables reportadas en la estación</h4>
                              <p:selectOneMenu value="#{controladorEstaciones.estacion.variable_id}" id="idvariablesestacion" style="min-width: 350px;">
@@ -45,6 +38,7 @@
                                         <th>Seleccione un AÑO especifico</th>
                                         <th>Seleccione un MES especifico</th>
                                         <th>Valor</th>
+                                        <th>Unidades</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -58,12 +52,14 @@
                                         <td>
                                             <p:selectOneMenu value="#{controladorEstaciones.mesesanioestacion.anio}" id="mesesAnio" style="min-width: 150px;">
                                                 <f:selectItems  value="#{controladorEstaciones.listamesesVariableEstacion}" var="meses" itemLabel="#{meses.anio}" itemValue="#{meses.anio}"/>
-                                                <p:ajax event="change" listener="#{controladorEstaciones.consultarDatosEstacion()}" update="frmlatlon:valorvariables" />
+                                                <p:ajax event="change" listener="#{controladorEstaciones.consultarDatosEstacion()}" update="valor unidad"/>
                                             </p:selectOneMenu>
                                         </td>
                                         <td>
-                                            <p:outputLabel id="valorvariables">#{controladorEstaciones.listamedidaUnidades[0]} 
-                                            </p:outputLabel>
+                                            <p:outputLabel id="valor" value="#{controladorEstaciones.listamedidaUnidades.get(0).getVariable_id()}"/>
+                                        </td>
+                                        <td>
+                                            <p:outputLabel id="unidad" value="#{controladorEstaciones.listamedidaUnidades.get(0).getName_variable()}"/>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -243,6 +239,14 @@
                             </p:tab>
                         </p:tabView>
                     </center>
+                    <div style="visibility: hidden;">
+                                <p:inputText id="idtxtlat" value="#{controladorEstaciones.txtlatitude}" immediate="true"/>
+                                <p:inputText id="idtxtlon" value="#{controladorEstaciones.txtlongotude}" immediate="true"/>
+                                <p:commandButton id="btnClicK" actionListener="#{controladorEstaciones.consultarVariablesEstacion()}"
+                                                 ajax="true" update="idvariablesestacion"
+                                                 value="click">
+                                </p:commandButton>
+                            </div>
                     <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
                         <f:facet name="complete">
                         </f:facet>
