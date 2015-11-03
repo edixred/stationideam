@@ -80,46 +80,29 @@ WHERE
     AND variable_id=1
     AND year=1965
 
-///////////GRAFICOS IEAM
-SELECT m.* FROM(
-	(SELECT station_id, value_point, units
-	FROM	stations NATURAL JOIN samples NATURAL JOIN variables
-	NATURAL JOIN years
-	WHERE
-	    latitude_3857=-8572050 AND longitude_3857=155700 AND variable_id=1 AND year=1965) a0
-	JOIN
-	(SELECT station_id,value_point, units
-	FROM	stations NATURAL JOIN samples NATURAL JOIN variables
-	NATURAL JOIN years
-	WHERE
-	    variable_id=1 AND year=1966) a1
+--GRAFICOS IEAM
+--AGREGADOS AÑOS ESTACION
+SELECT
+    year,variable_id,value_point,units
+FROM
+    stations
+NATURAL JOIN
+    samples
+NATURAL JOIN
+    variables
+NATURAL JOIN
+    years
+WHERE
+    latitude_3857=-8572050
+    AND longitude_3857=155700
+    AND variable_id=1
+    group by 1,2,3,4
+    order by 1,2
 
-	using
-	(station_id)
-	JOIN
-	(SELECT station_id,value_point, units
-	FROM	stations NATURAL JOIN samples NATURAL JOIN variables
-	NATURAL JOIN years
-	WHERE
-	    variable_id=1 AND year=1967) a2
-
-	using
-	(station_id)
-	JOIN
-	(SELECT station_id,value_point, units
-	FROM	stations NATURAL JOIN samples NATURAL JOIN variables
-	NATURAL JOIN years
-	WHERE
-	    variable_id=1 AND year=1968) a3
-	using
-	(station_id)
-	JOIN
-	(SELECT station_id,value_point, units
-	FROM	stations NATURAL JOIN samples NATURAL JOIN variables
-	NATURAL JOIN years
-	WHERE
-	    variable_id=1 AND year=1969) a4
-
-	using
-	(station_id)
-)m
+--MESES
+SELECT 
+    station_id, value_point, units
+FROM	
+    stations NATURAL JOIN samples NATURAL JOIN variables NATURAL JOIN years
+WHERE
+    latitude_3857=-8572050 AND longitude_3857=155700 AND variable_id=1 AND month=1

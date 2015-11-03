@@ -204,7 +204,9 @@ public class StationsFacade extends AbstractFacade<Stations> {
                 est.setVariable_id(obj[0].toString());
                 listaEstaciones.add(est);
             }
+            System.out.println("TAMAÑO: "+listaEstaciones.size());
             return listaEstaciones ;
+            
         } catch (Exception e) {
             return null;
         }

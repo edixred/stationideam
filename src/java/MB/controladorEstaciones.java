@@ -70,6 +70,7 @@ public class controladorEstaciones {
         listamedidaUnidades=estacionEjb.getByUnitMeasureMonthfromYearVariableStations(Integer.parseInt(txtlatitude), Integer.parseInt(txtlongotude),Integer.parseInt(estacion.getVariable_id()),Integer.parseInt(aniosestacion.getAnio()),Integer.parseInt(mesesanioestacion.getAnio()));
         valorUnidades=new variableEstacion();
         System.out.println(listamedidaUnidades.size());
+        System.out.println(listamedidaUnidades.get(0));
     }
 
     public List<variableEstacion> getListamedidaUnidades() {
