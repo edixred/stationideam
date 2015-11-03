@@ -213,5 +213,38 @@ public class StationsFacade extends AbstractFacade<Stations> {
     }
     
     ///////CONSULTAS PARA GRAFICAR VARIABLES
+    //MESES
+    public String getMonthsStation(int latitude, int longitude, ArrayList years,int varname) {
+        String cadenaseriemensual = "[";
+        try {
+            for(int m=0;m<=years.size();m++)
+            {
+                Query qmonths = getEntityManager().createNativeQuery("SELECT \n"
+                        + "	value_point\n"
+                        + " FROM\n"
+                        + "	stations\n"
+                        + " NATURAL JOIN\n"
+                        + "	samples\n"
+                        + " NATURAL JOIN\n"
+                        + "	variables\n"
+                        + " NATURAL JOIN\n"
+                        + "	years\n"
+                        + " WHERE\n"
+                        + "    latitude_3857=?\n"
+                        + "    AND longitude_3857=?\n"
+                        + "    AND variable_id=?\n"
+                        + "    AND year=?");
+                qmonths.setParameter(1, latitude);
+                qmonths.setParameter(2, longitude);
+                qmonths.setParameter(3, years.get(m));
+                cadenaseriemensual+=(String)qmonths.getSingleResult()+",";
+            }
+            System.out.println(cadenaseriemensual);
+            return  cadenaseriemensual+"]";
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
     
 }
