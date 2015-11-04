@@ -23,12 +23,12 @@
                     <center>
                         <div style="font-size: 11px;">
                             
-                            <h2>Para obtener información marcar una Estación en el Mapa  </h2>
+                            <h2>Marcar una ESTACIÓN en el mapa para obtener información  </h2>
                             <h4>Variables reportadas en la estación</h4>
                              <p:selectOneMenu value="#{controladorEstaciones.estacion.variable_id}" id="idvariablesestacion" style="min-width: 350px;">
                                                 <f:selectItems  value="#{controladorEstaciones.listaEstaciones}" var="capames" itemLabel="#{capames.name_variable}" itemValue="#{capames.variable_id}"/>
                                                 <p:ajax event="change"  listener="#{controladorEstaciones.ListarAniosVariableEstacion}"
-                                                        update="pTabla jTabla"/>
+                                                        update="pTabla jTabla mesesAnio valor unidad graficos"/>
                                             </p:selectOneMenu>
                             <br/><br/>
                             Medida en un año-mes determinado
@@ -88,7 +88,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <p:tabView style="font-size: 9px;">
+                        <p:tabView style="font-size: 9px;" id="graficos" >
                             <p:tab title="Crecimiento Mensual">
                                 <div id="container" style="width: 100%; height: 300px; margin: 0 auto"></div>
                                 <script>
@@ -153,20 +153,18 @@
                                         credits: {
                                             enabled: false
                                         },
-                                        series: [{name: 'nombre1 ', align: 'rigth',
-                                                data: [1,2,3,4,5,7,8,9,10,11,12,13]
-                                            },{name: 'nombre2 ', align: 'rigth',
-                                                data: [2,3,4,5,7,8,9,10,11,12,13,1]
+                                        series: [{name: "variable seleccionada", align: 'rigth',
+                                                data: #{controladorEstaciones.serieaniosvariable}
                                             }]
                                     });
                                 });
                             </script>
                             </p:tab>
                             <p:tab title="Crecimiento Anual">
-                                <div id="container2" style="width: 550px; height: 300px; margin: 0 auto"></div>
+                                <div id="containeranios" style="width: 550px; height: 300px; margin: 0 auto"></div>
                                 <script>
                                 $(function () {
-                                    $('#container2').highcharts({
+                                    $('#containeranios').highcharts({
                                         chart: {
                                             type: 'area',
                                             spacingBottom: 5
@@ -192,10 +190,7 @@
                                             backgroundColor: '#FFFFFF'
                                         },
                                         xAxis:
-                                                [{categories: ['2000', '2001', '2002', '2003',
-                                                            '2004', '2005', '2006', '2007', '2008',
-                                                            '2009', '2010', '2011', '2012', '2013',
-                                                            '2014'],
+                                                [{categories: #{controladorEstaciones.listaaniosgrafico},
                                                         reversed: false
                                                     }],
                                         yAxis: {
@@ -228,10 +223,8 @@
                                         credits: {
                                             enabled: false
                                         },
-                                        series: [{name: 'datos1 ', align: 'rigth',
-                                                data: [1,2,3,4,5,7,8,9,10,11,12,13,14,15,16]
-                                            },{name: 'datos2 ', align: 'rigth',
-                                                data: [2,3,4,5,7,8,9,10,11,12,13,12,3,4,1]
+                                        series: [{name: 'variable: #{controladorEstaciones.estacion.name_variable.toString()} ', align: 'rigth',
+                                                data: #{controladorEstaciones.serieaniosvariable}
                                             }]
                                     });
                                 });

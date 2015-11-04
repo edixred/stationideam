@@ -213,12 +213,13 @@ public class StationsFacade extends AbstractFacade<Stations> {
     }
     
     ///////CONSULTAS PARA GRAFICAR VARIABLES
-    //MESES
-    public String getMonthsStation(int latitude, int longitude, ArrayList years,int varname) {
-        String cadenaseriemensual = "[";
-        try {
-            for(int m=0;m<=years.size();m++)
-            {
+    //AÑOS
+    
+    public String getAVGYearsStation(int latitude, int longitude, int[] years, int varname) {
+        String cad = "[";
+        for (int m = 0; m <= years.length; m++) {
+            try {
+
                 Query qmonths = getEntityManager().createNativeQuery("SELECT \n"
                         + "	value_point\n"
                         + " FROM\n"
@@ -236,15 +237,19 @@ public class StationsFacade extends AbstractFacade<Stations> {
                         + "    AND year=?");
                 qmonths.setParameter(1, latitude);
                 qmonths.setParameter(2, longitude);
-                qmonths.setParameter(3, years.get(m));
-                cadenaseriemensual+=(String)qmonths.getSingleResult()+",";
+                qmonths.setParameter(3, varname);
+                qmonths.setParameter(4, (int) years[m]);
+                
+                if(m==years.length-1){
+                    cad += qmonths.getSingleResult().toString() + "]";
+                }
+                else{
+                    cad += qmonths.getSingleResult().toString() + ",";
+                }
+            } catch (Exception e) {
             }
-            System.out.println(cadenaseriemensual);
-            return  cadenaseriemensual+"]";
-
-        } catch (Exception e) {
-            return null;
-        }
+        }//System.out.println("FINAL CAD: "+cad);
+        return  cad;
     }
-    
+
 }

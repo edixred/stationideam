@@ -32,7 +32,7 @@ public class controladorEstaciones {
     private List<anioestacion> listamesesVariableEstacion;
     private variableEstacion estacion,valorUnidades;
     private anioestacion aniosestacion,mesesanioestacion;
-    private String txtlatitude,txtlongotude;
+    private String txtlatitude,txtlongotude,serieaniosvariable,listaaniosgrafico;
     
     @EJB
     private StationsFacade estacionEjb;
@@ -54,11 +54,23 @@ public class controladorEstaciones {
         listaEstaciones = estacionEjb.getByVariableStations(Integer.parseInt(txtlatitude.trim()), Integer.parseInt(txtlongotude.trim()));
         estacion=new variableEstacion();
     }
-    
-    public void ListarAniosVariableEstacion()
-    {
-        listaaniosVariableEstacion = estacionEjb.getByYearVariableStations(Integer.parseInt(txtlatitude.trim()), Integer.parseInt(txtlongotude.trim()),Integer.parseInt(estacion.getVariable_id()));
-        aniosestacion=new anioestacion(); 
+    public void ListarAniosVariableEstacion() {
+        listaaniosVariableEstacion = estacionEjb.getByYearVariableStations(Integer.parseInt(txtlatitude.trim()), Integer.parseInt(txtlongotude.trim()), Integer.parseInt(estacion.getVariable_id()));
+        aniosestacion = new anioestacion();
+        listaaniosgrafico="[";
+        int listYearsStation[] = new int[listaaniosVariableEstacion.size()];
+        for (int i = 0; i < listaaniosVariableEstacion.size(); i++) {
+            listYearsStation[i] = Integer.parseInt(listaaniosVariableEstacion.get(i).getAnio());
+            if(i==listaaniosVariableEstacion.size()-1){
+                    listaaniosgrafico+=listaaniosVariableEstacion.get(i).getAnio().toString()+"]";
+                }
+                else{
+                    listaaniosgrafico+=listaaniosVariableEstacion.get(i).getAnio().toString()+",";
+                }
+        }
+        serieaniosvariable=estacionEjb.getAVGYearsStation(Integer.parseInt(txtlatitude.trim()), Integer.parseInt(txtlongotude.trim()),listYearsStation, Integer.parseInt(estacion.getVariable_id()));
+        System.out.println("RESULTADO: "+serieaniosvariable);
+        System.out.println(listaaniosgrafico);
     }
     
     public void listarMesesAnio(){
@@ -67,8 +79,6 @@ public class controladorEstaciones {
     }
     public void consultarDatosEstacion(){
         listamedidaUnidades=estacionEjb.getByUnitMeasureMonthfromYearVariableStations(Integer.parseInt(txtlatitude), Integer.parseInt(txtlongotude),Integer.parseInt(estacion.getVariable_id()),Integer.parseInt(aniosestacion.getAnio()),Integer.parseInt(mesesanioestacion.getAnio()));
-        //valorUnidades=new variableEstacion();
-        //System.out.println(listamedidaUnidades.get(0).getName_variable());
     }
 
     public List<variableEstacion> getListamedidaUnidades() {
@@ -152,6 +162,22 @@ public class controladorEstaciones {
 
     public void setValorUnidades(variableEstacion valorUnidades) {
         this.valorUnidades = valorUnidades;
+    }
+
+    public String getSerieaniosvariable() {
+        return serieaniosvariable;
+    }
+
+    public void setSerieaniosvariable(String serieaniosvariable) {
+        this.serieaniosvariable = serieaniosvariable;
+    }
+
+    public String getListaaniosgrafico() {
+        return listaaniosgrafico;
+    }
+
+    public void setListaaniosgrafico(String listaaniosgrafico) {
+        this.listaaniosgrafico = listaaniosgrafico;
     }
     
     
