@@ -214,7 +214,6 @@ public class StationsFacade extends AbstractFacade<Stations> {
     
     ///////CONSULTAS PARA GRAFICAR VARIABLES
     //AÑOS
-    
     public String getAVGYearsStation(int latitude, int longitude, int[] years, int varname) {
         String cad = "[";
         for (int m = 0; m <= years.length; m++) {
@@ -252,4 +251,32 @@ public class StationsFacade extends AbstractFacade<Stations> {
         return  cad;
     }
 
+    //PROMEDIO MESES
+    public String getAVGMonthsStation(int latitude, int longitude, int varname) {
+        String cad = "[";
+        for (int m = 0; m <= 12; m++) {
+            try {
+
+                Query qmonths = getEntityManager().createNativeQuery("SELECT \n"
+                        + "    round(cast(avg(value_point) AS numeric) , 2) as enero\n"
+                        + " FROM	\n"
+                        + "    stations NATURAL JOIN samples NATURAL JOIN variables NATURAL JOIN months\n"
+                        + " WHERE\n"
+                        + "    latitude_3857=? AND longitude_3857=? AND variable_id=? AND month=?");
+                qmonths.setParameter(1, latitude);
+                qmonths.setParameter(2, longitude);
+                qmonths.setParameter(3, varname);
+                qmonths.setParameter(4, m);
+                
+                if(m==12){
+                    cad += qmonths.getSingleResult().toString() + "]";
+                }
+                else{
+                    cad += qmonths.getSingleResult().toString() + ",";
+                }
+            } catch (Exception e) {
+            }
+        }//System.out.println("FINAL CAD: "+cad);
+        return  cad;
+    }
 }

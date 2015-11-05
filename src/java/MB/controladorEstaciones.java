@@ -32,7 +32,9 @@ public class controladorEstaciones {
     private List<anioestacion> listamesesVariableEstacion;
     private variableEstacion estacion,valorUnidades;
     private anioestacion aniosestacion,mesesanioestacion;
-    private String txtlatitude,txtlongotude,serieaniosvariable,listaaniosgrafico;
+    private String txtlatitude,txtlongotude;
+    private String serieaniosvariable,listaaniosgrafico;
+    private String seriemesvariable;
     
     @EJB
     private StationsFacade estacionEjb;
@@ -69,8 +71,8 @@ public class controladorEstaciones {
                 }
         }
         serieaniosvariable=estacionEjb.getAVGYearsStation(Integer.parseInt(txtlatitude.trim()), Integer.parseInt(txtlongotude.trim()),listYearsStation, Integer.parseInt(estacion.getVariable_id()));
-        System.out.println("RESULTADO: "+serieaniosvariable);
-        System.out.println(listaaniosgrafico);
+        seriemesvariable=estacionEjb.getAVGMonthsStation(Integer.parseInt(txtlatitude.trim()), Integer.parseInt(txtlongotude.trim()),Integer.parseInt(estacion.getVariable_id()));
+        //System.out.println("RESULTADO: "+serieaniosvariable);System.out.println("RESULTADO MESES: "+seriemesvariable);
     }
     
     public void listarMesesAnio(){
@@ -178,6 +180,14 @@ public class controladorEstaciones {
 
     public void setListaaniosgrafico(String listaaniosgrafico) {
         this.listaaniosgrafico = listaaniosgrafico;
+    }
+
+    public String getSeriemesvariable() {
+        return seriemesvariable;
+    }
+
+    public void setSeriemesvariable(String seriemesvariable) {
+        this.seriemesvariable = seriemesvariable;
     }
     
     
