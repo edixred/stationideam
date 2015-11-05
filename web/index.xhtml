@@ -71,18 +71,22 @@
                                     <tr>
                                         <th>Seleccione un AÑO reportado</th>
                                         <th>Valor</th>
+                                        <th>Unidad</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>
                                             <p:selectOneMenu value="#{controladorEstaciones.aniosestacion.anio}" id="jTabla" style="min-width: 150px;">
-                                                <f:selectItems  value="#{controladorEstaciones.listaaniosVariableEstacion}" var="anio" itemLabel="#{anio.anio}" itemValue="#{anio.anio}"/>
-                                                <p:ajax event="change"  listener="#{controladorEstaciones.listarMesesAnio}" update="mesesAnio"/>
+                                                <f:selectItems  value="#{controladorEstaciones.listaaniosVariableEstacion}" var="anioprom" itemLabel="#{anioprom.anio}" itemValue="#{anioprom.anio}"/>
+                                                <p:ajax event="change"  listener="#{controladorEstaciones.consultarDatosAnualEstacion()}" update="valoranio unidadanio"/>
                                             </p:selectOneMenu>
                                         </td>
                                         <td>
-                                            ..
+                                            <p:outputLabel id="valoranio" value="#{controladorEstaciones.listamedidaUnidadesAnual.get(0).getVariable_id()}"/>
+                                        </td>
+                                        <td>
+                                            <p:outputLabel id="unidadanio" value="#{controladorEstaciones.listamedidaUnidadesAnual.get(0).getName_variable()}"/>
                                         </td>
                                     </tr>
                                 </tbody>

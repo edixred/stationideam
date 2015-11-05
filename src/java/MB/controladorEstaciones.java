@@ -27,7 +27,7 @@ public class controladorEstaciones {
      * Creates a new instance of controladorEstaciones
      */
     private List<variableEstacion> listaEstaciones;
-    private List<variableEstacion> listamedidaUnidades;
+    private List<variableEstacion> listamedidaUnidades,listamedidaUnidadesAnual;
     private List<anioestacion> listaaniosVariableEstacion;
     private List<anioestacion> listamesesVariableEstacion;
     private variableEstacion estacion,valorUnidades;
@@ -82,7 +82,19 @@ public class controladorEstaciones {
     public void consultarDatosEstacion(){
         listamedidaUnidades=estacionEjb.getByUnitMeasureMonthfromYearVariableStations(Integer.parseInt(txtlatitude), Integer.parseInt(txtlongotude),Integer.parseInt(estacion.getVariable_id()),Integer.parseInt(aniosestacion.getAnio()),Integer.parseInt(mesesanioestacion.getAnio()));
     }
+    public void consultarDatosAnualEstacion(){
+        listamedidaUnidadesAnual=estacionEjb.getByUnitMeasureYearfromYearVariableStations(Integer.parseInt(txtlatitude), Integer.parseInt(txtlongotude),Integer.parseInt(estacion.getVariable_id()),Integer.parseInt(aniosestacion.getAnio()));
+    }
 
+    public List<variableEstacion> getListamedidaUnidadesAnual() {
+        return listamedidaUnidadesAnual;
+    }
+
+    public void setListamedidaUnidadesAnual(List<variableEstacion> listamedidaUnidadesAnual) {
+        this.listamedidaUnidadesAnual = listamedidaUnidadesAnual;
+    }
+
+    
     public List<variableEstacion> getListamedidaUnidades() {
         return listamedidaUnidades;
     }

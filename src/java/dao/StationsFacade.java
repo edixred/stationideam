@@ -203,6 +203,44 @@ public class StationsFacade extends AbstractFacade<Stations> {
                 est.setName_variable(obj[1].toString());
                 est.setVariable_id(obj[0].toString());
                 listaEstaciones.add(est);
+            }//System.out.println("TAMAÑO: "+listaEstaciones.size());
+            return listaEstaciones ;
+            
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    public List<variableEstacion> getByUnitMeasureYearfromYearVariableStations(int latitude, int longitude, int variable, int year) {
+        try {
+            List<variableEstacion> listaEstaciones = new ArrayList<variableEstacion>();
+            Query q = getEntityManager().createNativeQuery("SELECT \n"
+                    + "	value_point, units\n"
+                    + "FROM\n"
+                    + "	stations\n"
+                    + "NATURAL JOIN\n"
+                    + "	samples\n"
+                    + "NATURAL JOIN\n"
+                    + "	variables\n"
+                    + "NATURAL JOIN\n"
+                    + "	years\n"
+                    + "WHERE\n"
+                    + "    latitude_3857=?\n"
+                    + "    AND longitude_3857=?\n"
+                    + "    AND variable_id=?\n"
+                    + "    AND year=?");
+            q.setParameter(1, latitude);
+            q.setParameter(2, longitude);
+            q.setParameter(3, variable);
+            q.setParameter(4, year);
+            List<Object[]>lista=q.getResultList();
+           
+            for ( Object[] obj :lista) {
+              
+                variableEstacion est=new variableEstacion();
+                est.setName_variable(obj[1].toString());
+                est.setVariable_id(obj[0].toString());
+                listaEstaciones.add(est);
             }
             System.out.println("TAMAÑO: "+listaEstaciones.size());
             return listaEstaciones ;
