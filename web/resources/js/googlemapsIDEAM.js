@@ -6,7 +6,6 @@ window.onload = function () {
     var loc = window.location.href;
     var fileNamePart = loc.split('/');
     urlpath = fileNamePart[0] + '/' + fileNamePart[1] + '/' + fileNamePart[2] + '/' + fileNamePart[3] + '/' + 'resources/js/json/narinoAdmin.json';
-    urlpathIdeamStations = fileNamePart[0] + '/' + fileNamePart[1] + '/' + fileNamePart[2] + '/' + fileNamePart[3] + '/' + 'resources/js/json/IDEAMstations.json';
 
 ////////////    
     var bounds = new OpenLayers.Bounds(
@@ -62,6 +61,12 @@ window.onload = function () {
             url: "ideamstations.json",
             format: new OpenLayers.Format.GeoJSON()
         }),
+        styleMap: new OpenLayers.StyleMap(
+    {
+        externalGraphic: 'station.png',
+        graphicWidth: 20, graphicHeight: 20, graphicYOffset: -24,
+        title: 'selectedFeature'
+    }),
         // Una vez se cargen los datos configurar el zoom a la extensión de los mismos
         eventListeners: {
             "featuresadded": function () {

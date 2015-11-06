@@ -17,233 +17,7 @@
         <h:form id="frmlatlon"  style="font-size: 11px;">
             <p:layout style="height: 700px ; margin-left: 3%; margin-right: 3%;" >
                 <p:layoutUnit position="center" id="panelmap" header="Estaciones IDEAM en Nariño" size="44%">
-                    <div id="map" style="height: 550px; width: 99%; " ></div>
-                </p:layoutUnit>
-                <p:layoutUnit header="Registro histórico de Estación(EPSG:4326)" position="east" size="50%" collapsed="false" collapsible="true" id="rigth" style="text-align: center;font-size: 10px;">
-                    <center>
-                        <div style="font-size: 11px;">
-                            
-                            <h2>Marcar una ESTACIÓN en el mapa para obtener información  </h2>
-                            <h4>Variables reportadas en la estación</h4>
-                             <p:selectOneMenu value="#{controladorEstaciones.estacion.variable_id}" id="idvariablesestacion" style="min-width: 350px;">
-                                                <f:selectItems  value="#{controladorEstaciones.listaEstaciones}" var="capames" itemLabel="#{capames.name_variable}" itemValue="#{capames.variable_id}"/>
-                                                <p:ajax event="change"  listener="#{controladorEstaciones.ListarAniosVariableEstacion}"
-                                                        update="pTabla jTabla mesesAnio valor unidad graficos"/>
-                                            </p:selectOneMenu>
-                            <br/><br/>
-                            Medida en un año-mes determinado
-                            <table width="100" cellspacing="2" border="1">
-                                <thead>
-                                    <tr>
-                                        <th>Seleccione un AÑO especifico</th>
-                                        <th>Seleccione un MES especifico</th>
-                                        <th>Valor</th>
-                                        <th>Unidades</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <p:selectOneMenu value="#{controladorEstaciones.aniosestacion.anio}" id="pTabla" style="min-width: 150px;">
-                                                <f:selectItems  value="#{controladorEstaciones.listaaniosVariableEstacion}" var="anio" itemLabel="#{anio.anio}" itemValue="#{anio.anio}"/>
-                                                <p:ajax event="change"  listener="#{controladorEstaciones.listarMesesAnio}" update="mesesAnio"/>
-                                            </p:selectOneMenu>
-                                        </td>
-                                        <td>
-                                            <p:selectOneMenu value="#{controladorEstaciones.mesesanioestacion.anio}" id="mesesAnio" style="min-width: 150px;">
-                                                <f:selectItems  value="#{controladorEstaciones.listamesesVariableEstacion}" var="meses" itemLabel="#{meses.anio}" itemValue="#{meses.anio}"/>
-                                                <p:ajax event="change" listener="#{controladorEstaciones.consultarDatosEstacion()}" update="valor unidad"/>
-                                            </p:selectOneMenu>
-                                        </td>
-                                        <td>
-                                            <p:outputLabel id="valor" value="#{controladorEstaciones.listamedidaUnidades.get(0).getVariable_id()}"/>
-                                        </td>
-                                        <td>
-                                            <p:outputLabel id="unidad" value="#{controladorEstaciones.listamedidaUnidades.get(0).getName_variable()}"/>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <hr/>
-                            Medida en un año determinado
-                            <table width="100" cellspacing="2" border="1">
-                                <thead>
-                                    <tr>
-                                        <th>Seleccione un AÑO reportado</th>
-                                        <th>Valor</th>
-                                        <th>Unidad</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <p:selectOneMenu value="#{controladorEstaciones.aniosestacion.anio}" id="jTabla" style="min-width: 150px;">
-                                                <f:selectItems  value="#{controladorEstaciones.listaaniosVariableEstacion}" var="anioprom" itemLabel="#{anioprom.anio}" itemValue="#{anioprom.anio}"/>
-                                                <p:ajax event="change"  listener="#{controladorEstaciones.consultarDatosAnualEstacion()}" update="valoranio unidadanio"/>
-                                            </p:selectOneMenu>
-                                        </td>
-                                        <td>
-                                            <p:outputLabel id="valoranio" value="#{controladorEstaciones.listamedidaUnidadesAnual.get(0).getVariable_id()}"/>
-                                        </td>
-                                        <td>
-                                            <p:outputLabel id="unidadanio" value="#{controladorEstaciones.listamedidaUnidadesAnual.get(0).getName_variable()}"/>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <p:tabView style="font-size: 9px;" id="graficos" >
-                            <p:tab title="Crecimiento Mensual">
-                                <div id="container" style="width: 500px; height: 250px; margin: 0 auto"></div>
-                                <script>
-                                $(function () {
-                                    $('#container').highcharts({
-                                        chart: {
-                                            type: 'area',
-                                            spacingBottom: 5
-                                        },
-                                        title: {
-                                            text: 'Promedio Mensual de Variables Medidas en estación'
-                                        },
-                                        subtitle: {
-                                            text: '',
-                                            floating: true,
-                                            align: 'left',
-                                            verticalAlign: 'bottom',
-                                            y: 15
-                                        },
-                                        legend: {
-                                            layout: 'vertical',
-                                            align: 'left',
-                                            verticalAlign: 'top',
-                                            x: 100,
-                                            y: 200,
-                                            floating: true,
-                                            borderWidth: 1,
-                                            backgroundColor: '#FFFFFF'
-                                        },
-                                        xAxis:
-                                                [{categories: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
-                                                            'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                                        reversed: false
-                                                    }],
-                                        yAxis: {
-                                            title: {
-                                                text: 'Variables en Estación'
-                                            },
-                                            labels: {
-                                                formatter: function () {
-                                                    return this.value;
-                                                }
-                                            }
-                                        },
-                                        tooltip: {
-                                            formatter: function () {
-                                                return '<b>' + this.series.name + '</b><br/>' +
-                                                        this.x + ': ' + this.y ;
-                                            }
-                                        },
-                                        plotOptions: {
-                                            area: {
-                                                fillOpacity: 0.2,
-                                                dataLabels: {
-                                                    enabled: true,rotation: -35,align: 'lefth',
-                                                    style: {
-                                                        fontSize: '10px',fontFamily: 'Times'
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        credits: {
-                                            enabled: false
-                                        },
-                                        series: [{name: "variable seleccionada", align: 'rigth',
-                                                data: #{controladorEstaciones.seriemesvariable}
-                                            }]
-                                    });
-                                });
-                            </script>
-                            </p:tab>
-                            <p:tab title="Crecimiento Anual">
-                                <div id="containeranios" style="width: 550px; height: 300px; margin: 0 auto"></div>
-                                <script>
-                                $(function () {
-                                    $('#containeranios').highcharts({
-                                        chart: {
-                                            type: 'area',
-                                            spacingBottom: 5
-                                        },
-                                        title: {
-                                            text: 'Promedio Anual Variables Medidas en estación'
-                                        },
-                                        subtitle: {
-                                            text: '',
-                                            floating: true,
-                                            align: 'left',
-                                            verticalAlign: 'bottom',
-                                            y: 15
-                                        },
-                                        legend: {
-                                            layout: 'vertical',
-                                            align: 'left',
-                                            verticalAlign: 'top',
-                                            x: 100,
-                                            y: 200,
-                                            floating: true,
-                                            borderWidth: 1,
-                                            backgroundColor: '#FFFFFF'
-                                        },
-                                        xAxis:
-                                                [{categories: #{controladorEstaciones.listaaniosgrafico},
-                                                        reversed: false
-                                                    }],
-                                        yAxis: {
-                                            title: {
-                                                text: 'Variables en Estación'
-                                            },
-                                            labels: {
-                                                formatter: function () {
-                                                    return this.value;
-                                                }
-                                            }
-                                        },
-                                        tooltip: {
-                                            formatter: function () {
-                                                return '<b>' + this.series.name + '</b><br/>' +
-                                                        this.x + ': ' + this.y ;
-                                            }
-                                        },
-                                        plotOptions: {
-                                            area: {
-                                                fillOpacity: 0.2,
-                                                dataLabels: {
-                                                    enabled: true,rotation: -35,align: 'lefth',
-                                                    style: {
-                                                        fontSize: '10px',fontFamily: 'Times'
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        credits: {
-                                            enabled: false
-                                        },
-                                        series: [{name: 'variable: #{controladorEstaciones.estacion.name_variable.toString()} ', align: 'rigth',
-                                                data: #{controladorEstaciones.serieaniosvariable}
-                                            }]
-                                    });
-                                });
-                            </script>
-                            </p:tab>
-                        </p:tabView>
-                    </center>
-                    <div style="visibility: hidden;">
-                                <p:inputText id="idtxtlat" value="#{controladorEstaciones.txtlatitude}" immediate="true"/>
-                                <p:inputText id="idtxtlon" value="#{controladorEstaciones.txtlongotude}" immediate="true"/>
-                                <p:commandButton id="btnClicK" actionListener="#{controladorEstaciones.consultarVariablesEstacion()}"
-                                                 ajax="true" update="idvariablesestacion"
-                                                 value="click">
-                                </p:commandButton>
-                            </div>
+                    <div id="map" style="height: 600px; width: 99%; " ></div>
                     <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
                         <f:facet name="complete">
                         </f:facet>
@@ -253,6 +27,257 @@
                         <p:graphicImage value="./img/process.gif" /><br></br>
                         <h:outputText value="GRACIAS POR ESPERAR" />
                     </p:dialog>
+                </p:layoutUnit>
+                <p:layoutUnit header="Registro histórico de Estación(EPSG:4326)" position="east" size="50%" collapsed="false" collapsible="true" id="rigth" style="text-align: center;font-size: 10px;">
+                    <center>
+                        <div style="font-size: 11px;">
+                            <table style="border: 2px #82FA58 groove;width: 90%;">
+                                <thead>
+                                    <tr>
+                                        <th><h2>Marcar una ESTACIÓN <img src="station.png" alt="" height="25" width="25"/> en el mapa para obtener información</h2></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <p:outputLabel value="Variables reportadas en la estación:" style="font-size: 12px;"/><br/>
+
+                                            <p:selectOneMenu value="#{controladorEstaciones.estacion.variable_id}" id="idvariablesestacion" style="min-width: 350px; margin-left: 20px;">
+                                                <f:selectItems  value="#{controladorEstaciones.listaEstaciones}" var="capames" itemLabel="#{capames.name_variable}" itemValue="#{capames.variable_id}"/>
+                                                <p:ajax event="change"  listener="#{controladorEstaciones.ListarAniosVariableEstacion}"
+                                                        update="pTabla jTabla mesesAnio valor unidad graficos"/>
+                                            </p:selectOneMenu>
+                                            <hr/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Medida en un año-mes determinado
+                                            <center>
+                                                <table width="100" cellspacing="1" border="1">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Seleccione un AÑO especifico</th>
+                                                            <th>Seleccione un MES especifico</th>
+                                                            <th>Valor</th>
+                                                            <th>Unidades</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <p:selectOneMenu value="#{controladorEstaciones.aniosestacion.anio}" id="pTabla" style="min-width: 150px;">
+                                                                    <f:selectItems  value="#{controladorEstaciones.listaaniosVariableEstacion}" var="anio" itemLabel="#{anio.anio}" itemValue="#{anio.anio}"/>
+                                                                    <p:ajax event="change"  listener="#{controladorEstaciones.listarMesesAnio}" update="mesesAnio"/>
+                                                                </p:selectOneMenu>
+                                                            </td>
+                                                            <td>
+                                                                <p:selectOneMenu value="#{controladorEstaciones.mesesanioestacion.anio}" id="mesesAnio" style="min-width: 150px;">
+                                                                    <f:selectItems  value="#{controladorEstaciones.listamesesVariableEstacion}" var="meses" itemLabel="#{meses.anio}" itemValue="#{meses.anio}"/>
+                                                                    <p:ajax event="change" listener="#{controladorEstaciones.consultarDatosEstacion()}" update="valor unidad"/>
+                                                                </p:selectOneMenu>
+                                                            </td>
+                                                            <td>
+                                                                <p:outputLabel id="valor" value="#{controladorEstaciones.listamedidaUnidades.get(0).getVariable_id()}"/>
+                                                            </td>
+                                                            <td>
+                                                                <p:outputLabel id="unidad" value="#{controladorEstaciones.listamedidaUnidades.get(0).getName_variable()}"/>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <hr/>
+                                            </center>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Medida en un año determinado
+                                            <center>
+                                                <table cellspacing="1" border="1" >
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Seleccione un AÑO reportado</th>
+                                                            <th>Valor</th>
+                                                            <th>Unidad</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <p:selectOneMenu value="#{controladorEstaciones.aniosestacion.anio}" id="jTabla" style="min-width: 150px;">
+                                                                    <f:selectItems  value="#{controladorEstaciones.listaaniosVariableEstacion}" var="anioprom" itemLabel="#{anioprom.anio}" itemValue="#{anioprom.anio}"/>
+                                                                    <p:ajax event="change"  listener="#{controladorEstaciones.consultarDatosAnualEstacion()}" update="valoranio unidadanio"/>
+                                                                </p:selectOneMenu>
+                                                            </td>
+                                                            <td>
+                                                                <p:outputLabel id="valoranio" value="#{controladorEstaciones.listamedidaUnidadesAnual.get(0).getVariable_id()}"/>
+                                                            </td>
+                                                            <td>
+                                                                <p:outputLabel id="unidadanio" value="#{controladorEstaciones.listamedidaUnidadesAnual.get(0).getName_variable()}"/>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </center>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br/>
+                        </div>
+                        <p:tabView style="font-size: 9px;" id="graficos" >
+                            <p:tab title="Crecimiento Mensual">
+                                <div id="container" style="width: 620px; height: 300px; margin: 0 auto"></div>
+                                <script>
+                                    $(function () {
+                                        $('#container').highcharts({
+                                            chart: {
+                                                type: 'area',
+                                                spacingBottom: 5
+                                            },
+                                            title: {
+                                                text: 'Promedio Mensual de Variable'
+                                            },
+                                            subtitle: {
+                                                text: '',
+                                                floating: true,
+                                                align: 'left',
+                                                verticalAlign: 'bottom',
+                                                y: 15
+                                            },
+                                            legend: {
+                                                layout: 'vertical',
+                                                align: 'left',
+                                                verticalAlign: 'top',
+                                                x: 100,
+                                                y: 200,
+                                                floating: true,
+                                                borderWidth: 1,
+                                                backgroundColor: '#FFFFFF'
+                                            },
+                                            xAxis:
+                                                    [{categories: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto',
+                                                                'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                                            reversed: false
+                                                        }],
+                                            yAxis: {
+                                                title: {
+                                                    text: ''
+                                                },
+                                                labels: {
+                                                    formatter: function () {
+                                                        return this.value;
+                                                    }
+                                                }
+                                            },
+                                            tooltip: {
+                                                formatter: function () {
+                                                    return '<b>' + this.series.name + '</b><br/>' +
+                                                            this.x + ': ' + this.y;
+                                                }
+                                            },
+                                            plotOptions: {
+                                                area: {
+                                                    fillOpacity: 0.2,
+                                                    dataLabels: {
+                                                        enabled: true, rotation: -35, align: 'lefth',
+                                                        style: {
+                                                            fontSize: '10px', fontFamily: 'Times'
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            credits: {
+                                                enabled: false
+                                            },
+                                            series: [{name: "variable seleccionada", align: 'rigth',
+                                                    data: #{controladorEstaciones.seriemesvariable}
+                                                }]
+                                        });
+                                    });
+                                </script>
+                            </p:tab>
+                            <p:tab title="Crecimiento Anual">
+                                <div id="containeranios" style="width: 620px; height: 300px; margin: 0 auto"></div>
+                                <script>
+                                    $(function () {
+                                        $('#containeranios').highcharts({
+                                            chart: {
+                                                type: 'area',
+                                                spacingBottom: 5
+                                            },
+                                            title: {
+                                                text: 'Promedio Anual Variable'
+                                            },
+                                            subtitle: {
+                                                text: '',
+                                                floating: true,
+                                                align: 'left',
+                                                verticalAlign: 'bottom',
+                                                y: 15
+                                            },
+                                            legend: {
+                                                layout: 'vertical',
+                                                align: 'left',
+                                                verticalAlign: 'top',
+                                                x: 100,
+                                                y: 200,
+                                                floating: true,
+                                                borderWidth: 1,
+                                                backgroundColor: '#FFFFFF'
+                                            },
+                                            xAxis:
+                                                    [{categories: #{controladorEstaciones.listaaniosgrafico},
+                                                            reversed: false
+                                                        }],
+                                            yAxis: {
+                                                title: {
+                                                    text: '.'
+                                                },
+                                                labels: {
+                                                    formatter: function () {
+                                                        return this.value;
+                                                    }
+                                                }
+                                            },
+                                            tooltip: {
+                                                formatter: function () {
+                                                    return '<b>' + this.series.name + '</b><br/>' +
+                                                            this.x + ': ' + this.y;
+                                                }
+                                            },
+                                            plotOptions: {
+                                                area: {
+                                                    fillOpacity: 0.2,
+                                                    dataLabels: {
+                                                        enabled: true, rotation: -35, align: 'lefth',
+                                                        style: {
+                                                            fontSize: '10px', fontFamily: 'Times'
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            credits: {
+                                                enabled: false
+                                            },
+                                            series: [{name: 'variable: #{controladorEstaciones.estacion.name_variable.toString()} ', align: 'rigth',
+                                                    data: #{controladorEstaciones.serieaniosvariable}
+                                                }]
+                                        });
+                                    });
+                                </script>
+                            </p:tab>
+                        </p:tabView>
+                    </center>
+                    <div style="visibility: hidden;">
+                        <p:inputText id="idtxtlat" value="#{controladorEstaciones.txtlatitude}" immediate="true"/>
+                        <p:inputText id="idtxtlon" value="#{controladorEstaciones.txtlongotude}" immediate="true"/>
+                        <p:commandButton id="btnClicK" actionListener="#{controladorEstaciones.consultarVariablesEstacion()}"
+                                         ajax="true" update="idvariablesestacion"
+                                         value="click">
+                        </p:commandButton>
+                    </div>
                 </p:layoutUnit>
             </p:layout>
         </h:form>
